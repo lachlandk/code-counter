@@ -1,2 +1,9 @@
 # Jetbrain IDE config files
 /.idea
+
+# Python
+/__pycache__
+
+# PyInstaller
+/build
+*.spec
