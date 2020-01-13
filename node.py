@@ -1,9 +1,10 @@
 import os
+import counter
 
 
 class CounterNode:
 
-	def __init__(self, path, parent=None):
+	def __init__(self, path, parent=None, auto_report=False,):
 		self.path = path
 		self.parent_node = parent
 		self.child_nodes = []
@@ -13,6 +14,8 @@ class CounterNode:
 		self.index()
 		self.count()
 		self.merge()
+		if auto_report:
+			print(self)
 
 	def __str__(self):
 		results = "Results for /" + self.path + ":\n"
@@ -32,24 +35,20 @@ class CounterNode:
 				dirnames.remove(directory)
 
 		for dirname in dirnames:
-			new_child = CounterNode(os.path.join(self.path, dirname), self)
+			new_child = CounterNode(os.path.join(self.path, dirname), parent=self)
 			self.child_nodes.append(new_child)
 
-	def count(self):  # TODO: count method not counting newlines at end of file
+	def count(self):
 		for file in self.files:
-			path_split = os.path.splitext(file)
-			file_type = (path_split[1] if not path_split[1] == "" else path_split[0])
-			line_count = 0
-			with open(file) as f:
-				try:
-					for _ in f:
-						line_count += 1
-				except UnicodeDecodeError:
-					pass  # TODO: Fix this
 			try:
-				self.line_counts[file_type] += line_count
-			except KeyError:
-				self.line_counts[file_type] = line_count
+				file_type, line_count = counter.Counter(file).result
+				try:
+					self.line_counts[file_type] += line_count
+				except KeyError:
+					self.line_counts[file_type] = line_count
+			except ValueError:
+				# Not a text file
+				continue
 
 	def merge(self):
 		if self.parent_node is not None:
