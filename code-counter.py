@@ -8,10 +8,11 @@ class CounterNode:
 		self.parent_node = parent
 		self.child_nodes = []
 		self.files = []
-		self.line_counts = []
+		self.line_counts = {}
 
 		self.index()
 		self.count()
+		self.merge()
 		print(self)
 
 	def __repr__(self):
@@ -32,6 +33,8 @@ class CounterNode:
 
 	def count(self):
 		for file in self.files:
+			path_split = os.path.splitext(file)
+			file_type = (path_split[1] if not path_split[1] == "" else path_split[0])
 			line_count = 0
 			with open(file) as f:
 				try:
@@ -39,17 +42,18 @@ class CounterNode:
 						line_count += 1
 				except UnicodeDecodeError:
 					pass  # TODO: Fix this
-			if self.parent_node is not None:  # TODO: get rid of this, identifier for master node
-				notfound = True
-				master_node = self.parent_node
-				while notfound:
-					if master_node.parent_node is None:
-						notfound = False
-					else:
-						master_node = master_node.parent_node
-				master_node.line_counts.append((file, line_count))
-			else:
-				self.line_counts.append((file, line_count))
+			try:
+				self.line_counts[file_type] += line_count
+			except KeyError:
+				self.line_counts[file_type] = line_count
+
+	def merge(self):
+		if self.parent_node is not None:
+			for file_type in self.line_counts:
+				try:
+					self.parent_node.line_counts[file_type] += self.line_counts[file_type]
+				except KeyError:
+					self.parent_node.line_counts[file_type] = self.line_counts[file_type]
 
 
 if __name__ == "__main__":
