@@ -1,0 +1,8 @@
+{
+	"ignored": [
+		".git",
+		".idea",
+		"__pycache__",
+		"build"
+	]
+}

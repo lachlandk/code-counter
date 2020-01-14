@@ -1,4 +1,5 @@
 import os
+import json
 import counter
 
 
@@ -30,9 +31,11 @@ class CounterNode:
 		for filename in filenames:
 			self.files.append(os.path.join(self.path, filename))
 
-		for directory in ignored_directories:
-			if directory in dirnames:
-				dirnames.remove(directory)
+		with open("ignored.json", "r") as f:
+			ignored_directories = json.load(f)["ignored"]
+			for directory in ignored_directories:
+				if directory in dirnames:
+					dirnames.remove(directory)
 
 		for dirname in dirnames:
 			new_child = CounterNode(os.path.join(self.path, dirname), parent=self)
@@ -60,6 +63,5 @@ class CounterNode:
 
 
 if __name__ == "__main__":
-	ignored_directories = [".git", ".idea", "__pycache__", "dist", "build"]
 	master = CounterNode(input("Root directory: "))
 	print(master)
