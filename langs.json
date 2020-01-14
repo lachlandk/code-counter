@@ -1,0 +1,47 @@
+{
+	".py": {
+		"type": "Python",
+		"comment": "#",
+		"block-comment": ["\"\"\"", "\"\"\""]
+	},
+	".html": {
+		"type": "HTML",
+		"block-comment": ["<!--", "-->"]
+	},
+	".css": {
+		"type": "CSS stylesheet",
+		"block-comment": ["/*", "*/"]
+	},
+	".js": {
+		"type": "Javascript",
+		"comment": "//",
+		"block-comment": ["/*", "*/"]
+	},
+	".json": {
+		"type": "JSON file"
+	},
+	".csv": {
+		"type": "CSV file"
+	},
+	".txt": {
+		"type": "Plaintext file"
+	},
+	".gitignore": {
+		"type": "Gitignore file",
+		"comment": "#"
+	},
+	".gitattributes":  {
+		"type": "Gitattributes file"
+	},
+	".md": {
+		"type": "Markdown file"
+	},
+	".sh": {
+		"type": "Shell script",
+		"comment": "#"
+	},
+	".mcfunction": {
+		"type": "Minecraft function file",
+		"comment": "#"
+	}
+}
