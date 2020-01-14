@@ -7,6 +7,8 @@ class CounterNode:
 
 	def __init__(self, path, parent=None, auto_report=False,):
 		self.path = path
+		if not os.path.isdir(path):
+			return
 		self.parent_node = parent
 		self.child_nodes = []
 		self.files = []
@@ -19,12 +21,15 @@ class CounterNode:
 			print(self)
 
 	def __str__(self):
-		results = "Results for /" + self.path + ":\n"
-		results += "File Type | Number of Lines\n"
-		results += "---------------------------\n"
-		for line_count in self.line_counts:
-			results += line_count + " | " + str(self.line_counts[line_count]) + "\n"
-		return results
+		try:
+			results = "Results for /" + self.path + ":\n"
+			results += "File Type | Number of Lines\n"
+			results += "---------------------------\n"
+			for line_count in self.line_counts:
+				results += line_count + " | " + str(self.line_counts[line_count]) + "\n"
+			return results
+		except AttributeError:
+			return "The directory " + self.path + " could not be found."
 
 	def index(self):
 		_, dirnames, filenames = next(os.walk(self.path))
