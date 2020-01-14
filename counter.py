@@ -1,4 +1,5 @@
 from os import path
+import sys
 import json
 
 
@@ -15,7 +16,12 @@ class Counter:
 
 	def identify_filetype(self):
 		file_type = path.splitext(self.path)[1] if not path.splitext(self.path)[1] == "" else path.split(self.path)[1]
-		with open("langs.json", "r") as f:
+
+		if hasattr(sys, '_MEIPASS'):
+			langs_json = path.join(sys._MEIPASS, "langs.json")
+		else:
+			langs_json = path.join(path.abspath("."), "langs.json")
+		with open(langs_json, "r") as f:
 			langs = json.load(f)
 			try:
 				self.type = langs[file_type]["type"]
@@ -23,7 +29,7 @@ class Counter:
 				self.type = file_type
 
 	def count(self):
-		line_count = 1
+		line_count = 0
 		try:
 			with open(self.path, "r", encoding="utf-8") as f:
 				for _ in f:

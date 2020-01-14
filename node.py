@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 import counter
 
 
@@ -36,7 +37,11 @@ class CounterNode:
 		for filename in filenames:
 			self.files.append(os.path.join(self.path, filename))
 
-		with open("ignored.json", "r") as f:
+		if hasattr(sys, '_MEIPASS'):
+			ignored_json = os.path.join(sys._MEIPASS, "ignored.json")
+		else:
+			ignored_json = os.path.join(os.path.abspath("."), "ignored.json")
+		with open(ignored_json, "r") as f:
 			ignored_directories = json.load(f)["ignored"]
 			for directory in ignored_directories:
 				if directory in dirnames:
