@@ -65,8 +65,3 @@ class CounterNode:
 					self.parent_node.line_counts[file_type] += self.line_counts[file_type]
 				except KeyError:
 					self.parent_node.line_counts[file_type] = self.line_counts[file_type]
-
-
-if __name__ == "__main__":
-	master = CounterNode(input("Root directory: "))
-	print(master)

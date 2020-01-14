@@ -32,7 +32,3 @@ class Counter:
 		except UnicodeDecodeError:
 			# Not a text file
 			pass
-
-
-if __name__ == "__main__":
-	count = Counter(input("Path to file: "))
