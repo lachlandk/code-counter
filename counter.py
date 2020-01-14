@@ -1,25 +1,37 @@
-import os
+from os import path
+import json
 
 
 class Counter:
 
 	def __init__(self, file):
 		self.path = file
+		self.type = None
 		self.result = ()
+
+		self.identify_filetype()
 		self.count()
 		# TODO: turn count method into generator
 
-	def count(self):  # TODO: count method not counting newlines at end of file
-		path_split = os.path.splitext(self.path)
-		file_type = (path_split[1] if not path_split[1] == "" else path_split[0])
-		line_count = 0
-		with open(self.path) as f:  # TODO: check if file is binary or not (ignored filetypes?)
+	def identify_filetype(self):
+		file_type = path.splitext(self.path)[1] if not path.splitext(self.path)[1] == "" else path.split(self.path)[1]
+		with open("langs.json", "r") as f:
+			langs = json.load(f)
 			try:
+				self.type = langs[file_type]["type"]
+			except KeyError:
+				self.type = file_type
+
+	def count(self):
+		line_count = 1
+		try:
+			with open(self.path, "r", encoding="utf-8") as f:
 				for _ in f:
 					line_count += 1
-			except UnicodeDecodeError:
-				pass  # TODO: Fix this
-		self.result = (file_type, line_count)
+				self.result = (self.type, line_count)
+		except UnicodeDecodeError:
+			# Not a text file
+			pass
 
 
 if __name__ == "__main__":
