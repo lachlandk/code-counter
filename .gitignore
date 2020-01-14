@@ -7,4 +7,3 @@
 # PyInstaller
 /build
 *.spec
-compile.sh
