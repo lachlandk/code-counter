@@ -6,4 +6,3 @@
 
 # PyInstaller
 /build
-*.spec
